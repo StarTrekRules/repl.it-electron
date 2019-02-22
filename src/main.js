@@ -4,7 +4,6 @@ const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require(__dirname + '/electron-preferences');
 const path = require('path');
 const EBU = require(__dirname + '/electron-basic-updater');
 const ElectronContext = require('electron-context-menu');
@@ -61,119 +60,6 @@ getAllThemes().catch((reason) => {
     }
 );
 
-
-/* Preferences */
-const Preferences = new ElectronPreferences({
-    dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
-    defaults: {
-        'app-theme': {
-            'premade_theme': null, 'css_string': null, 'enable_custom_css': false
-        },
-        'update-settings': {
-            'auto-update': true
-        }
-    },
-    onLoad: data => {
-        return data;
-    },
-    'webPreferences': {
-        'devTools': true
-    },
-    'sections': [{
-        'id': 'app-theme',
-        'label': 'App Theme',
-        'icon': 'preferences',
-        'form': {
-            'groups': [
-                /*{
-                    'label': 'Which of the following foods do you like?',
-                    'key': 'premade_theme',
-                    'type': 'dropdown',
-                    'options': Themes,
-                    'help': 'Select one theme and use the window to check it out.'
-                },*/ {
-                    'fields': [{
-                        'label': 'Custom CSS import',
-                        'key': 'css_string',
-                        'type': 'Text',
-                        'options': [{label: 'Yes', value: true}],
-                        'help': 'Paste your CSS here to be applied in the app'
-                    },
-
-                        {
-                            'label': 'Enable Custom CSS',
-                            'key': 'enable_custom_css',
-                            'type': 'radio',
-                            'options': [{
-                                'label': 'Yes',
-                                'value': true
-                            },
-                                {
-                                    'label': 'No',
-                                    'value': false
-                                }
-                            ]
-                        }],
-                },
-
-                {
-                    'id': 'update-settings',
-                    'label': 'Update Settings',
-                    'icon': 'square-download',
-                    'form': {
-                        'groups': [{
-                            'fields': [{
-                                'label': 'Auto Update',
-                                'key': 'auto-update',
-                                'type': 'radio',
-                                'options': [{
-                                    'label': 'Yes',
-                                    'value': true
-                                },
-                                    {
-                                        'label': 'No',
-                                        'value': false
-                                    }
-                                ],
-                                'help': 'Enable/Disable auto update.'
-                            }]
-                        }]
-                    }
-                },
-                /*{
-                    'id': 'editor-settings',
-                    'label': 'Editor Settings',
-                    'icon': 'single-folded-content',
-                    'form': {
-                        'groups': [{
-                            'fields': [{
-                                'label': 'Font size',
-                                'key': 'font-size',
-                                'type': 'text',
-                                'help': 'Font size in px for the editor.'
-                            }]
-                        }]
-                    }
-                }*/
-            ]
-        }
-    }]
-});
-Preferences.on('save', preferences => {
-    console.log(
-        `Preferences were saved.`,
-        JSON.stringify(preferences, null, 4)
-    );
-    Dark = Preferences.value('app-theme').dark;
-    mainWindow.reload();
-    if (subWindow) {
-        subWindow.reload();
-    }
-});
-
-Theme = Preferences.value('app-theme').theme;
-Update = Preferences.value('update-settings')['auto-update'];
-
 /* Menu Template */
 const template = [
     {
@@ -217,9 +103,9 @@ const template = [
             {
                 label: 'Preference',
                 accelerator: 'CmdOrCtrl+,',
-                click() {
-                    Preferences.show()
-                }
+                // click() {
+                //     Preferences.show()
+                // }
             },
             {
                 type: 'separator'
@@ -290,22 +176,22 @@ const template = [
                 label: 'Dark Mode',
                 accelerator: 'F10',
                 click(item, focusedWindow) {
-                    Dark = true;
-                    Preferences.value('app-theme', { dark: true });
-                    addDark(focusedWindow, Dark);
+                    // Dark = true;
+                    // Preferences.value('app-theme', { dark: true });
+                    // addDark(focusedWindow, Dark);
                 }
             },
             {
                 label: 'Dark Mode Off',
                 accelerator: 'F9',
                 click(item, focusedWindow) {
-                    Dark = false;
-                    try {
-                        Preferences.value('app-theme', { dark: false });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                    focusedWindow.reload();
+                    // Dark = false;
+                    // try {
+                    //     Preferences.value('app-theme', { dark: false });
+                    // } catch (e) {
+                    //     console.error(e);
+                    // }
+                    // focusedWindow.reload();
                 }
             },
             {
