@@ -22,9 +22,6 @@ const rpc = new DiscordRPC.Client({
     transport: 'ipc'
 });
 
-/* Declare Functions */
-// let createWindow = require('./common/createWindow');
-
 /* Custom Methods */
 String.prototype.capitalize = function () {
     return this.replace(/(^|\s)([a-z])/g, function (m, p1, p2) {
@@ -64,7 +61,9 @@ getAllThemes().catch((reason) => {
 );
 
 /* Menu Template */
-// let mainTemplate = require('./menu-template/main.js');
+let createMainTemplate = require('./menu-template/main.js');
+let mainTemplate = createMainTemplate(mainWindow);;
+
 const template = [
     {
         label: 'Main',
@@ -765,6 +764,7 @@ function startSubWindow(url) {
 }
 
 // common/createwindow.js
+// let createWindow = require('./common/createWindow');
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
