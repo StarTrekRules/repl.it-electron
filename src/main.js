@@ -168,27 +168,7 @@ async function appSetup() {
         mainMenuTemplate,
         // {
         //     submenu: [
-        //         {
-        //             label: 'Send Sub to Main Window',
-        //             click() {
-        //                 if (subWindow) {
-        //                     var subUrl = subWindow.getURL();
-        //                     dialog.showMessageBox({
-        //                         title: "",
-        //                         message: `Do you want to load ${subUrl} in window 1?`,
-        //                         type: 'info',
-        //                         buttons: ["Yes", "No"],
-        //                         defaultId: 0
-        //                     }, (index) => {
-        //                         if (index === 0) {
-        //                             mainWindow.loadURL(subUrl)
-        //                         } else {
 
-        //                         }
-        //                     })
-        //                 }
-        //             }
-        //         },
         //         {
         //             label: 'Preferences',
         //             accelerator: 'CmdOrCtrl+,',
@@ -207,6 +187,29 @@ async function appSetup() {
         {
             label: 'Edit',
             submenu: [
+                {
+                    label: 'Send Sub to Main Window',
+                    click() {
+                        if (subWindow) {
+                            var subUrl = subWindow.getURL();
+                            dialog.showMessageBox(
+                                {
+                                    title: '',
+                                    message: `Do you want to load ${subUrl} in window 1?`,
+                                    type: 'info',
+                                    buttons: ['Yes', 'No'],
+                                    defaultId: 0
+                                },
+                                index => {
+                                    if (index === 0) {
+                                        mainWindow.loadURL(subUrl);
+                                    } else {
+                                    }
+                                }
+                            );
+                        }
+                    }
+                },
                 {
                     role: 'undo'
                 },
