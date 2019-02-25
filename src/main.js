@@ -161,61 +161,70 @@ async function appSetup() {
     });
 
 
+    let mainMenuTemplateFunction = require('./menu-template/main');
+    let mainMenuTemplate = mainMenuTemplateFunction(mainWindow);
     /* Menu Template */
     const template = [
-        {
-            label: 'Main',
-            submenu: [
-                {
-                    label: 'Sub Window',
-                    accelerator: 'CmdOrCtrl+N',
-                    click() {
-                        startSubWindow(mainWindow.webContents.getURL());
-                    }
-                },
-                {
-                    label: 'Join Multiplayer/Custom Repl.it Links',
-                    accelerator: 'CmdOrCtrl+L',
-                    click() {
-                        startCustomSession();
-                    }
-                },
-                {
-                    label: 'Send Sub to Main Window',
-                    click() {
-                        if (subWindow) {
-                            var subUrl = subWindow.getURL();
-                            dialog.showMessageBox({
-                                title: "",
-                                message: `Do you want to load ${subUrl} in window 1?`,
-                                type: 'info',
-                                buttons: ["Yes", "No"],
-                                defaultId: 0
-                            }, (index) => {
-                                if (index === 0) {
-                                    mainWindow.loadURL(subUrl)
-                                } else {
+        mainMenuTemplate,
+        // {
+        //     submenu: [
+            // {
+            //     label: 'New Window',
+            //     accelerator: 'CmdOrCtrl+N',
+            //     click() {
+            //         startSubWindow(mainWindow.webContents.getURL());
+            //     }
+            // }
+        //         {
+        //             label: 'Sub Window',
+        //             accelerator: 'CmdOrCtrl+N',
+        //             click() {
+        //                 startSubWindow(mainWindow.webContents.getURL());
+        //             }
+        //         },
+        //         {
+        //             label: 'Join Multiplayer/Custom Repl.it Links',
+        //             accelerator: 'CmdOrCtrl+L',
+        //             click() {
+        //                 startCustomSession();
+        //             }
+        //         },
+        //         {
+        //             label: 'Send Sub to Main Window',
+        //             click() {
+        //                 if (subWindow) {
+        //                     var subUrl = subWindow.getURL();
+        //                     dialog.showMessageBox({
+        //                         title: "",
+        //                         message: `Do you want to load ${subUrl} in window 1?`,
+        //                         type: 'info',
+        //                         buttons: ["Yes", "No"],
+        //                         defaultId: 0
+        //                     }, (index) => {
+        //                         if (index === 0) {
+        //                             mainWindow.loadURL(subUrl)
+        //                         } else {
 
-                                }
-                            })
-                        }
-                    }
-                },
-                {
-                    label: 'Preferences',
-                    accelerator: 'CmdOrCtrl+,',
-                    click() {
-                        Preferences.show()
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'quit'
-                }
-            ]
-        },
+        //                         }
+        //                     })
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             label: 'Preferences',
+        //             accelerator: 'CmdOrCtrl+,',
+        //             click() {
+        //                 Preferences.show()
+        //             }
+        //         },
+        //         {
+        //             type: 'separator'
+        //         },
+        //         {
+        //             role: 'quit'
+        //         }
+        //     ]
+        // },
         {
             label: 'Edit',
             submenu: [
