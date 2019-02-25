@@ -169,13 +169,6 @@ async function appSetup() {
         // {
         //     submenu: [
         //         {
-        //             label: 'Join Multiplayer/Custom Repl.it Links',
-        //             accelerator: 'CmdOrCtrl+L',
-        //             click() {
-        //                 startCustomSession();
-        //             }
-        //         },
-        //         {
         //             label: 'Send Sub to Main Window',
         //             click() {
         //                 if (subWindow) {

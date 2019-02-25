@@ -1,4 +1,5 @@
 let startSubWindow = require('../common/startSubWindow');
+let startCustomSession = require('../common/startCustomSession');
 
 function createMainTemplate(mainWindow) {
     let main = {
@@ -21,6 +22,13 @@ function createMainTemplate(mainWindow) {
                 click() {
                     let url = mainWindow.webContents.getURL();
                     startSubWindow(mainWindow, url);
+                }
+            },
+            {
+                label: 'Join Multiplayer/Custom Repl.it Links',
+                accelerator: 'CmdOrCtrl+L',
+                click() {
+                    startCustomSession();
                 }
             }
         ]

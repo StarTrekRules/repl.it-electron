@@ -1,7 +1,8 @@
 const { dialog } = require('electron');
 const ElectronPrompt = require('electron-prompt');
+let path = require('path');
 
-function startCustomSession() {
+function startCustomSession(mainWindow) {
     ElectronPrompt({
         title: 'Join Multiplayer',
         label: 'URL:',
@@ -9,9 +10,7 @@ function startCustomSession() {
         inputAttrs: {
             type: 'url'
         },
-        customStylesheet: Dark
-            ? __dirname + '/styles/promptDark.css'
-            : __dirname + '/styles/prompt.css'
+        customStylesheet: path.resolve(__dirname, '..', 'styles', 'promptDark.css')
     })
         .then(r => {
             if (r === undefined || r === null) {
@@ -19,7 +18,10 @@ function startCustomSession() {
             }
             if (
                 r.toString().replace(' ', '') === '' ||
-                !r.toString().startsWith('https://repl.it/')
+                !r.toString().startsWith('https://repl.it/') ||
+                !r
+                    .toString()
+                    .includes('repl.co' || !r.toString().includes('repl.run'))
             ) {
                 dialog.showMessageBox({
                     title: '',
@@ -46,7 +48,7 @@ function startCustomSession() {
                         }
                     );
                 } else {
-                    startSubWindow(r);
+                    startSubWindow(mainWindow, r);
                 }
             }
         })
