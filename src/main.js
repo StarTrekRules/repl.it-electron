@@ -168,20 +168,6 @@ async function appSetup() {
         mainMenuTemplate,
         // {
         //     submenu: [
-            // {
-            //     label: 'New Window',
-            //     accelerator: 'CmdOrCtrl+N',
-            //     click() {
-            //         startSubWindow(mainWindow.webContents.getURL());
-            //     }
-            // }
-        //         {
-        //             label: 'Sub Window',
-        //             accelerator: 'CmdOrCtrl+N',
-        //             click() {
-        //                 startSubWindow(mainWindow.webContents.getURL());
-        //             }
-        //         },
         //         {
         //             label: 'Join Multiplayer/Custom Repl.it Links',
         //             accelerator: 'CmdOrCtrl+L',

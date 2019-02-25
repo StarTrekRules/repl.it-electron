@@ -14,6 +14,14 @@ function createMainTemplate(mainWindow) {
                     let url = mainWindow.webContents.getURL();
                     startSubWindow(mainWindow, url);
                 }
+            },
+            {
+                label: 'Sub Window',
+                accelerator: 'CmdOrCtrl+N',
+                click() {
+                    let url = mainWindow.webContents.getURL();
+                    startSubWindow(mainWindow, url);
+                }
             }
         ]
     };
