@@ -2,10 +2,6 @@ let path = require('path');
 const { dialog, BrowserWindow } = require('electron');
 
 function startSubWindow(mainWindow, url) {
-    // if (subWindow !== undefined) {
-    //     return;
-    // }
-    console.log(mainWindow);
     subWindow = new BrowserWindow({
         width: mainWindow.getSize()[0] - 10,
         height: mainWindow.getSize()[1] - 10,

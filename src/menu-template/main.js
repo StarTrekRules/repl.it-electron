@@ -28,7 +28,7 @@ function createMainTemplate(mainWindow) {
                 label: 'Join Multiplayer/Custom Repl.it Links',
                 accelerator: 'CmdOrCtrl+L',
                 click() {
-                    startCustomSession();
+                    startCustomSession(mainWindow);
                 }
             }
         ]
