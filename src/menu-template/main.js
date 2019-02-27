@@ -2,7 +2,7 @@ let startSubWindow = require('../common/startSubWindow');
 let startCustomSession = require('../common/startCustomSession');
 
 function createMainTemplate(mainWindow, subWindow, Preferences) {
-    let main = {
+    return {
         label: 'Main',
         submenu: [
             {
@@ -66,8 +66,6 @@ function createMainTemplate(mainWindow, subWindow, Preferences) {
             }
         ]
     };
-
-    return main;
 }
 
 module.exports = createMainTemplate;

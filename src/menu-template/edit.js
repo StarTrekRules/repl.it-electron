@@ -1,5 +1,5 @@
 function createEditTemplate() {
-    let template = {
+    return {
         label: 'Edit',
         submenu: [
             {
@@ -34,7 +34,6 @@ function createEditTemplate() {
             }
         ]
     };
-    return template;
 }
 
 module.exports = createEditTemplate;

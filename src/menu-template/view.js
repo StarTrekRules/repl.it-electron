@@ -1,6 +1,6 @@
 // Not in use yet
 function createViewTemplate(mainWindow, subWindow) {
-    let template = [
+    return [
         {
             label: 'Send Sub to Main Window',
             click() {
@@ -25,7 +25,6 @@ function createViewTemplate(mainWindow, subWindow) {
             }
         }
     ];
-    return template;
 }
 
 module.exports = createViewTemplate;
