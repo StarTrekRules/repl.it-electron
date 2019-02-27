@@ -191,6 +191,7 @@ async function appSetup() {
         {
             label: 'View',
             submenu: [
+                ...viewMenuTemplate,
                 {
                     label: 'Send Sub to Main Window',
                     click() {

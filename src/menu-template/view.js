@@ -1,3 +1,5 @@
+let { dialog } = require('electron');
+
 // Not in use yet
 function createViewTemplate(mainWindow, subWindow) {
     return [

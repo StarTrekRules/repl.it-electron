@@ -1,3 +1,4 @@
+const { dialog } = require('electron');
 let startSubWindow = require('../common/startSubWindow');
 let startCustomSession = require('../common/startCustomSession');
 
@@ -31,8 +32,9 @@ function createMainTemplate(mainWindow, subWindow, Preferences) {
             {
                 label: 'Send Sub to Main Window',
                 click() {
+                    console.log("charlie", mainWindow, "x-ray", subWindow);
                     if (subWindow) {
-                        var subUrl = subWindow.getURL();
+                        let subUrl = subWindow.getURL();
                         dialog.showMessageBox(
                             {
                                 title: '',
