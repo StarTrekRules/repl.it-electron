@@ -181,12 +181,14 @@ async function appSetup() {
 
     let menuConglomerate = require('./menu-template/conglomerate');
 
-    let mainMenuTemplateFunction = require('./menu-template/main');
-    let mainMenuTemplate = mainMenuTemplateFunction(mainWindow);
-
     // After integrating these one by one, only use menuConglomerate
+    let mainMenuTemplateFunction = require('./menu-template/main');
+    let mainMenuTemplate = mainMenuTemplateFunction(mainWindow, subWindow);
     let editTemplateFunction = require('./menu-template/edit');
     let editMenuTemplate = editTemplateFunction();
+    let viewMenuTemplateFunction = require('./menu-template/view');
+    let viewMenuTemplate = viewMenuTemplateFunction(mainWindow, subWindow);
+
     /* Menu Template */
     const template = [
         mainMenuTemplate,
@@ -412,24 +414,24 @@ async function appSetup() {
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
     doUpdate(Preferences.value('update-settings')['auto-update']);
-    if (mainWindow) {
-        addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
-        mainWindow.webContents.on('did-start-navigation', () => {
-            addTheme(
-                mainWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-        });
-    }
-    if (subWindow) {
-        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
-        subWindow.webContents.on('did-start-navigation', () => {
-            addTheme(
-                subWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-        });
-    }
+    // if (mainWindow) {
+    //     addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
+    //     mainWindow.webContents.on('did-start-navigation', () => {
+    //         addTheme(
+    //             mainWindow,
+    //             Themes[Preferences.value('app-theme')['theme']]
+    //         );
+    //     });
+    // }
+    // if (subWindow) {
+    //     addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
+    //     subWindow.webContents.on('did-start-navigation', () => {
+    //         addTheme(
+    //             subWindow,
+    //             Themes[Preferences.value('app-theme')['theme']]
+    //         );
+    //     });
+    // }
 }
 
 appSetup().then();

@@ -36,3 +36,5 @@ function createEditTemplate() {
     };
     return template;
 }
+
+module.exports = createEditTemplate;

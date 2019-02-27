@@ -1,13 +1,10 @@
 let startSubWindow = require('../common/startSubWindow');
 let startCustomSession = require('../common/startCustomSession');
 
-function createMainTemplate(mainWindow) {
+function createMainTemplate(mainWindow, subWindow) {
     let main = {
         label: 'Main',
         submenu: [
-            {
-                role: 'undo'
-            },
             {
                 label: 'New Window',
                 accelerator: 'CmdOrCtrl+N',
