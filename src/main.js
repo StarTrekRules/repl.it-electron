@@ -218,41 +218,7 @@ async function appSetup() {
                 }
             ]
         },
-        {
-            label: 'Edit',
-            submenu: [
-                {
-                    role: 'undo'
-                },
-                {
-                    role: 'redo'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'cut'
-                },
-                {
-                    role: 'copy'
-                },
-                {
-                    role: 'paste'
-                },
-                {
-                    role: 'pasteandmatchstyle'
-                },
-                {
-                    role: 'delete'
-                },
-                {
-                    role: 'selectall'
-                },
-                {
-                    type: 'separator'
-                }
-            ]
-        },
+        editMenuTemplate,
         {
             label: 'View',
             submenu: [
@@ -544,8 +510,7 @@ function startCustomSession() {
         inputAttrs: {
             type: 'url'
         },
-        customStylesheet: __dirname + '/styles/promptDark.css'
-        // customStylesheet: path.resolve('.', 'promptDark.css')
+        customStylesheet: path.resolve('.', 'promptDark.css')
 
     })
         .then(r => {
