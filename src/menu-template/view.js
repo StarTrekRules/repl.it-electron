@@ -5,7 +5,7 @@ function createViewTemplate(mainWindow, subWindow) {
             label: 'Send Sub to Main Window',
             click() {
                 if (subWindow) {
-                    var subUrl = subWindow.getURL();
+                    let subUrl = subWindow.getURL();
                     dialog.showMessageBox(
                         {
                             title: '',

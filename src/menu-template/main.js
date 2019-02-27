@@ -1,7 +1,7 @@
 let startSubWindow = require('../common/startSubWindow');
 let startCustomSession = require('../common/startCustomSession');
 
-function createMainTemplate(mainWindow, subWindow) {
+function createMainTemplate(mainWindow, subWindow, Preferences) {
     let main = {
         label: 'Main',
         submenu: [
@@ -50,6 +50,19 @@ function createMainTemplate(mainWindow, subWindow) {
                         );
                     }
                 }
+            },
+            {
+                label: 'Preferences',
+                accelerator: 'CmdOrCtrl+,',
+                click() {
+                    Preferences.show();
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'quit'
             }
         ]
     };
