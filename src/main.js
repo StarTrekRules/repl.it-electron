@@ -179,15 +179,10 @@ async function appSetup() {
         }
     });
 
-    let menuConglomerate = require('./menu-template/conglomerate');
-
     // After integrating these one by one, only use menuConglomerate
-    let mainMenuTemplateFunction = require('./menu-template/main');
-    let mainMenuTemplate = mainMenuTemplateFunction(mainWindow, subWindow, Preferences);
-    let editTemplateFunction = require('./menu-template/edit');
-    let editMenuTemplate = editTemplateFunction();
-    let viewMenuTemplateFunction = require('./menu-template/view');
-    let viewMenuTemplate = viewMenuTemplateFunction(mainWindow, subWindow);
+    let mainMenuTemplate = require('./menu-template/main')(mainWindow, subWindow, Preferences);
+    let editMenuTemplate = require('./menu-template/edit')();
+    let viewMenuTemplate = require('./menu-template/view')(mainWindow, subWindow);
 
     /* Menu Template */
     const template = [
