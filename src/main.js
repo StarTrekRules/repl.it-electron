@@ -1,18 +1,16 @@
 /* Require Packages */
-const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const {app, BrowserWindow, Menu, dialog, shell} = require('electron');
 const path = require('path');
 const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require(path.resolve('.', 'electron-preferences'));
-const EBU = require(path.resolve('.', 'electron-basic-updater'));
+const ElectronPreferences = require(path.resolve(__dirname, 'electron-preferences'));
+const EBU = require(path.resolve(__dirname, 'electron-basic-updater'));
 const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
 
 /* Declare Constants */
-let DarkCSS;
-var Dark;
 let mainWindow;
 var subWindow = undefined;
 const clientId = '498635999274991626';
@@ -45,17 +43,12 @@ async function appSetup() {
     }
 
     Themes['Default White'] = '';
-    theme_instert.append({ label: 'Default White', value: 'Default White' });
+    theme_instert.append({'label': 'Default White', 'value': 'Default White'});
     for (let theme in themes) {
         if (themes.hasOwnProperty(theme)) {
-            var resp = await requests.get(
-                `https://www.darktheme.tk/theme.css?${themes[theme]}`
-            );
+            var resp = await requests.get(`https://www.darktheme.tk/theme.css?${themes[theme]}`);
             Themes[theme] = resp.data.toString();
-            theme_instert.append({
-                label: theme.toString(),
-                value: theme.toString()
-            });
+            theme_instert.append({'label': theme.toString(), 'value': theme.toString()})
         }
     }
     /* Preferences */
@@ -63,9 +56,7 @@ async function appSetup() {
         dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
         defaults: {
             'app-theme': {
-                theme: 'Default White',
-                css_string: null,
-                enable_custom_css: false
+                'theme': 'Default White', 'css_string': null, 'enable_custom_css': false
             },
             'update-settings': {
                 'auto-update': true
@@ -74,25 +65,23 @@ async function appSetup() {
         onLoad: data => {
             return data;
         },
-        webPreferences: {
-            devTools: true
+        'webPreferences': {
+            'devTools': true
         },
-        sections: [
-            {
-                id: 'app-theme',
-                label: 'App Theme',
-                icon: 'widget',
-                form: {
-                    groups: [
+        'sections': [{
+            'id': 'app-theme',
+            'label': 'App Theme',
+            'icon': 'widget',
+            'form': {
+                'groups': [{
+                    'fields': [
                         {
-                            fields: [
-                                {
-                                    label: 'Theme Select\n',
-                                    key: 'theme',
-                                    type: 'dropdown',
-                                    options: theme_instert,
-                                    help: 'Select a theme'
-                                } /*{
+                            'label': 'Theme Select\n',
+                            'key': 'theme',
+                            'type': 'dropdown',
+                            'options': theme_instert,
+                            'help': 'Select a theme'
+                        }, /*{
                         'label': 'Custom CSS import',
                         'key': 'css_string',
                         'type': 'Text',
@@ -113,41 +102,34 @@ async function appSetup() {
                                 'value': false
                             }
                         ]
-                    }*/
-                            ]
-                        }
-                    ]
+                    }*/]
+                }]
+            }
+        },
+            {
+                'id': 'update-settings',
+                'label': 'Update Settings',
+                'icon': 'square-download',
+                'form': {
+                    'groups': [{
+                        'fields': [{
+                            'label': 'Auto Update',
+                            'key': 'auto-update',
+                            'type': 'radio',
+                            'options': [{
+                                'label': 'Yes',
+                                'value': true
+                            },
+                                {
+                                    'label': 'No',
+                                    'value': false
+                                }
+                            ],
+                            'help': 'Enable/Disable auto update.'
+                        }]
+                    }]
                 }
             },
-            {
-                id: 'update-settings',
-                label: 'Update Settings',
-                icon: 'square-download',
-                form: {
-                    groups: [
-                        {
-                            fields: [
-                                {
-                                    label: 'Auto Update',
-                                    key: 'auto-update',
-                                    type: 'radio',
-                                    options: [
-                                        {
-                                            label: 'Yes',
-                                            value: true
-                                        },
-                                        {
-                                            label: 'No',
-                                            value: false
-                                        }
-                                    ],
-                                    help: 'Enable/Disable auto update.'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
             /*{
                 'id': 'editor-settings',
                 'label': 'Editor Settings',
@@ -167,10 +149,7 @@ async function appSetup() {
     });
     Preferences.on('save', preferences => {
         console.log(
-            `Preferences were saved. at ${path.resolve(
-                app.getPath('userData'),
-                'Preferences.json'
-            )}`
+            `Preferences were saved. at ${path.resolve(app.getPath('userData'), 'Preferences.json')}`,
             //JSON.stringify(preferences, null, 4)
         );
         mainWindow.reload();
@@ -186,35 +165,97 @@ async function appSetup() {
 
     /* Menu Template */
     const template = [
-        mainMenuTemplate,
-        editMenuTemplate,
         {
-            label: 'View',
+            label: 'Main',
             submenu: [
-                ...viewMenuTemplate,
+                {
+                    label: 'Sub Window',
+                    accelerator: 'CmdOrCtrl+N',
+                    click() {
+                        startSubWindow(mainWindow.webContents.getURL());
+                    }
+                },
+                {
+                    label: 'Join Multiplayer/Custom Repl.it Links',
+                    accelerator: 'CmdOrCtrl+L',
+                    click() {
+                        startCustomSession();
+                    }
+                },
                 {
                     label: 'Send Sub to Main Window',
                     click() {
                         if (subWindow) {
                             var subUrl = subWindow.getURL();
-                            dialog.showMessageBox(
-                                {
-                                    title: '',
-                                    message: `Do you want to load ${subUrl} in window 1?`,
-                                    type: 'info',
-                                    buttons: ['Yes', 'No'],
-                                    defaultId: 0
-                                },
-                                index => {
-                                    if (index === 0) {
-                                        mainWindow.loadURL(subUrl);
-                                    } else {
-                                    }
+                            dialog.showMessageBox({
+                                title: "",
+                                message: `Do you want to load ${subUrl} in window 1?`,
+                                type: 'info',
+                                buttons: ["Yes", "No"],
+                                defaultId: 0
+                            }, (index) => {
+                                if (index === 0) {
+                                    mainWindow.loadURL(subUrl)
+                                } else {
+
                                 }
-                            );
+                            })
                         }
                     }
                 },
+                {
+                    label: 'Preferences',
+                    accelerator: 'CmdOrCtrl+,',
+                    click() {
+                        Preferences.show()
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'quit'
+                }
+            ]
+        },
+        {
+            label: 'Edit',
+            submenu: [
+                {
+                    role: 'undo'
+                },
+                {
+                    role: 'redo'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'cut'
+                },
+                {
+                    role: 'copy'
+                },
+                {
+                    role: 'paste'
+                },
+                {
+                    role: 'pasteandmatchstyle'
+                },
+                {
+                    role: 'delete'
+                },
+                {
+                    role: 'selectall'
+                },
+                {
+                    type: 'separator'
+                }
+            ]
+        },
+        {
+            label: 'View',
+            submenu: [
                 {
                     label: 'Go Back',
                     click(item, focusedWindow) {
@@ -237,7 +278,7 @@ async function appSetup() {
                 {
                     label: 'Open Current Link externally',
                     click(item, focusedWindow) {
-                        shell.openExternal(focusedWindow.getURL());
+                        shell.openExternal(focusedWindow.getURL())
                     }
                 },
                 {
@@ -301,14 +342,12 @@ async function appSetup() {
         },
         {
             role: 'help',
-            submenu: [
-                {
-                    label: 'Learn More about repl.it',
-                    click() {
-                        shell.openExternal('https://repl.it/site/about');
-                    }
+            submenu: [{
+                label: 'Learn More about repl.it',
+                click() {
+                    shell.openExternal('https://repl.it/site/about')
                 }
-            ]
+            }]
         }
     ];
     if (process.platform === 'darwin') {
@@ -395,20 +434,14 @@ async function appSetup() {
     if (mainWindow) {
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
         mainWindow.webContents.on('did-start-navigation', () => {
-            addTheme(
-                mainWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-        });
+            addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']])
+        })
     }
     if (subWindow) {
-        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
+        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']])
         subWindow.webContents.on('did-start-navigation', () => {
-            addTheme(
-                subWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-        });
+            addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']])
+        })
     }
 }
 
@@ -423,7 +456,7 @@ function doUpdate(Update) {
     EBU.init({
         api: 'https://replit-electron-updater.leon332157.repl.co/check/' // The API EBU will talk to
     });
-    EBU.check(function(result) {
+    EBU.check(function (result) {
         console.log(result);
         if (result.toString().startsWith('has_update|')) {
             dialog.showMessageBox(
@@ -431,7 +464,7 @@ function doUpdate(Update) {
                     title: 'Update available',
                     message: `New version ${
                         result.toString().split('|')[1]
-                    } is available, would you like to update it?
+                        } is available, would you like to update it?
 
 New features:
 ${result.toString().split('|')[2]}
@@ -440,10 +473,10 @@ ${result.toString().split('|')[2]}
                     buttons: ['Yes', 'No'],
                     defaultId: 1
                 },
-                function(index) {
+                function (index) {
                     if (index === 0) {
                         //mainWindow.hide();
-                        EBU.download(true, function(result) {
+                        EBU.download(true, function (result) {
                             if (result.toString() === 'success') {
                                 dialog.showMessageBox({
                                     title: 'Update success',
@@ -471,12 +504,8 @@ ${result.toString().split('|')[2]}
 function ErrorMessage(windowObject, errorCode) {
     var id = windowObject.InternalId;
     var reason = ChromeErrors[errorCode];
-    if (
-        reason === 'ABORTED' ||
-        reason === 'INVALID_ARGUMENT' ||
-        reason === 'FAILED'
-    ) {
-        windowObject.reload(true);
+    if (reason === "ABORTED" || reason === "INVALID_ARGUMENT" || reason === "FAILED") {
+        windowObject.reload(true)
     }
     dialog.showMessageBox(
         {
@@ -516,6 +545,8 @@ function startCustomSession() {
             type: 'url'
         },
         customStylesheet: __dirname + '/styles/promptDark.css'
+        // customStylesheet: path.resolve('.', 'promptDark.css')
+
     })
         .then(r => {
             if (r === undefined || r === null) {
@@ -523,10 +554,7 @@ function startCustomSession() {
             }
             if (
                 r.toString().replace(' ', '') === '' ||
-                !r.toString().startsWith('https://repl.it/') ||
-                !r
-                    .toString()
-                    .includes('repl.co' || !r.toString().includes('repl.run'))
+                !r.toString().startsWith('https://repl.it/') || !r.toString().includes('repl.co' || !r.toString().includes('repl.run'))
             ) {
                 dialog.showMessageBox({
                     title: '',
@@ -598,8 +626,10 @@ user.classList.add('bot');
 }catch(e){}
 }`
             )
-            .catch(ret => {});
-    } catch (e) {}
+            .catch(ret => {
+            });
+    } catch (e) {
+    }
 }
 
 async function setPlayingDiscord() {
@@ -620,7 +650,7 @@ async function setPlayingDiscord() {
         if (spliturl[3] !== undefined) {
             await mainWindow.webContents.executeJavaScript(
                 "document.getElementsByClassName('board-post-detail-title')[0].textContent",
-                function(result) {
+                function (result) {
                     viewing = `Viewing ${result}`;
                 }
             ); // gets the repl talk post name
@@ -664,19 +694,19 @@ async function setPlayingDiscord() {
         var replLanguage = 'Error';
         await mainWindow.webContents.executeJavaScript(
             "document.querySelector('.file-header-name div').textContent",
-            function(result) {
+            function (result) {
                 fileName = result;
             }
         );
         await mainWindow.webContents.executeJavaScript(
             "document.getElementsByTagName('title')[0].textContent.split('-').pop()",
-            function(result) {
+            function (result) {
                 replName = result;
             }
         );
         await mainWindow.webContents.executeJavaScript(
             "document.querySelector('.workspace-header-description-container img')['title']",
-            function(result) {
+            function (result) {
                 replLanguage = result;
             }
         );
@@ -773,7 +803,6 @@ function selectInput(focusedWindow) {
     );
 }
 
-// use common/startSubWindow.js instead
 function startSubWindow(url) {
     if (subWindow !== undefined) {
         return;
@@ -833,8 +862,6 @@ function startSubWindow(url) {
     });
 }
 
-// common/createwindow.js
-// let createWindow = require('./common/createWindow');
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
@@ -901,7 +928,7 @@ rpc.on('ready', () => {
 rpc.on('ready', () => {
     setInterval(setUrl, 1000);
 });
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
     app.quit();
 });
 app.on('ready', () => {
