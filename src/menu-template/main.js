@@ -1,6 +1,8 @@
 const { dialog } = require('electron');
-let startSubWindow = require('../common/startSubWindow');
+let store = require('../store/store');
 let startCustomSession = require('../common/startCustomSession');
+
+let startSubWindow = store.methods.startSubWindow;
 
 function createMainTemplate(mainWindow, subWindow, Preferences) {
     return {

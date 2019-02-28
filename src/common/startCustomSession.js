@@ -10,7 +10,7 @@ function startCustomSession(mainWindow) {
         inputAttrs: {
             type: 'url'
         },
-        customStylesheet: path.resolve(__dirname, '..', 'styles', 'promptDark.css')
+        customStylesheet: path.resolve(__dirname, '..', 'promptDark.css')
     })
         .then(r => {
             if (r === undefined || r === null) {
