@@ -180,7 +180,7 @@ async function appSetup() {
         }
     });
 
-    // After integrating these one by one, only use menuConglomerate
+    console.log('foo', subWindow);
     let mainMenuTemplate = require('./menu-template/main')(
         mainWindow,
         subWindow,
@@ -194,6 +194,7 @@ async function appSetup() {
 
     /* Menu Template */
     const template = [
+        mainMenuTemplate,
         {
             label: 'Main',
             submenu: [
@@ -214,6 +215,7 @@ async function appSetup() {
                 {
                     label: 'Send Sub to Main Window',
                     click() {
+                        console.log('charlie', mainWindow, 'x-ray', subWindow);
                         if (subWindow) {
                             var subUrl = subWindow.getURL();
                             dialog.showMessageBox(

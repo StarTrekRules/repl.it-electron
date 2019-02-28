@@ -1,10 +1,11 @@
 let path = require('path');
-const { dialog, BrowserWindow } = require('electron');
+const { dialog, shell, BrowserWindow } = require('electron');
+let ErrorMessage = require('../common/ErrorMessage');
 
-function startSubWindow(mainWindow, url) {
-    // if (subWindow !== undefined) {
-    //     return;
-    // }
+function startSubWindow(mainWindow, subWindow, url) {
+    if (subWindow !== undefined) {
+        return;
+    }
     subWindow = new BrowserWindow({
         width: mainWindow.getSize()[0] - 10,
         height: mainWindow.getSize()[1] - 10,
@@ -38,7 +39,7 @@ function startSubWindow(mainWindow, url) {
             dialog.showMessageBox(
                 {
                     title: 'Confirm External Links',
-                    message: `${url} Lookas like an external link, would you like to load it externally?`,
+                    message: `${url} Looks like an external link, would you like to load it externally?`,
                     type: 'info',
                     buttons: ['No', 'Yes'],
                     defaultId: 1
@@ -58,6 +59,7 @@ function startSubWindow(mainWindow, url) {
             );
         }
     });
+    return subWindow;
 }
 
 module.exports = startSubWindow;

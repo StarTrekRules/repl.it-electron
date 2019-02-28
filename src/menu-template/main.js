@@ -7,19 +7,11 @@ function createMainTemplate(mainWindow, subWindow, Preferences) {
         label: 'Main',
         submenu: [
             {
-                label: 'New Window',
-                accelerator: 'CmdOrCtrl+N',
-                click() {
-                    let url = mainWindow.webContents.getURL();
-                    startSubWindow(mainWindow, url);
-                }
-            },
-            {
                 label: 'Sub Window',
                 accelerator: 'CmdOrCtrl+N',
                 click() {
                     let url = mainWindow.webContents.getURL();
-                    startSubWindow(mainWindow, url);
+                    startSubWindow(mainWindow, subWindow, url);
                 }
             },
             {
@@ -33,7 +25,7 @@ function createMainTemplate(mainWindow, subWindow, Preferences) {
                 label: 'Send Sub to Main Window',
                 click() {
                     console.log("charlie", mainWindow, "x-ray", subWindow);
-                    if (subWindow) {
+                    // if (subWindow) {
                         let subUrl = subWindow.getURL();
                         dialog.showMessageBox(
                             {
@@ -50,7 +42,7 @@ function createMainTemplate(mainWindow, subWindow, Preferences) {
                                 }
                             }
                         );
-                    }
+                    // }
                 }
             },
             {
